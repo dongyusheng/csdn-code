@@ -193,6 +193,7 @@ int main()
     for(i = 0; i < count; ++i)
         async_http_commit(reqs[i].hostname, reqs[i].resource, context, async_http_client_result_callback);
 
+    getchar();
     //销毁上下文
     async_http_destory_context(context);
     
