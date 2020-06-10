@@ -1,4 +1,5 @@
 //utf8_to_utf16.c
+//https://github.com/dongyusheng/csdn-code/blob/master/iconv/utf8_to_utf16.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
