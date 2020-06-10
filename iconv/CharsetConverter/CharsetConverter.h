@@ -1,3 +1,4 @@
+//https://github.com/dongyusheng/csdn-code/blob/master/iconv/CharsetConverter/CharsetConverter.h
 #ifndef __CHARSET_CONVERTER_H__
 #define __CHARSET_CONVERTER_H__
 
