@@ -1,12 +1,4 @@
 //使用哈夫曼树压缩和解压文档
-/*
- * @Author: your name
- * @Date: 2020-06-04 16:21:01
- * @LastEditTime: 2020-06-04 19:13:01
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \1-huffman\main.cpp
- */ 
 /*利用库中的优先级队列实现哈夫曼树，最后基于哈夫曼树最终实现文件压缩。 
 描述： 
     1.统计文件中字符出现的次数，利用优先级队列构建Haffman树，生成Huffman编码。 
@@ -22,8 +14,7 @@
 
 #include <assert.h>
 
-// 注意是用g++编译器
-// 编译 g++ -o huffman main.cpp HuffmanTree.hpp FileCompress.hpp 
+//编译g++ -o huffman main.cpp HuffmanTree.hpp FileCompress.hpp 
 int main(int argc, char** argv)
 {
     if (argc != 2)
