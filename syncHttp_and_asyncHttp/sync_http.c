@@ -1,3 +1,4 @@
+//https://github.com/dongyusheng/csdn-code/tree/master/syncHttp_and_asyncHttp
 #include <stdio.h>
 #include <netdb.h>
 #include <string.h>
