@@ -1,0 +1,23 @@
+{
+	"name":	"milo",
+	"age":	80,
+	"professional":	{
+		"english":	4,
+		"putonghua":	2,
+		"computer":	3
+	},
+	"languages":	["C++", "C"],
+	"phone":	{
+		"number":	"18620823143",
+		"type":	"home"
+	},
+	"courses":	[{
+			"name":	"Linux kernel development",
+			"price":	7.7
+		}, {
+			"name":	"Linux server development",
+			"price":	8.8
+		}],
+	"vip":	true,
+	"address":	null
+}
