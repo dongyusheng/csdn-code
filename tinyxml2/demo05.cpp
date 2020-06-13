@@ -1,4 +1,5 @@
 //demo05.cpp
+//https://github.com/dongyusheng/csdn-code/tree/master/tinyxml2
 //增删改查高级版本
 #include <iostream>
 #include "tinyxml2.h"
