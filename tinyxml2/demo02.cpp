@@ -1,4 +1,5 @@
 //demo02.cpp
+//https://github.com/dongyusheng/csdn-code/tree/master/tinyxml2
 //测试讲一段xml字符串写入本地文件demo02_1.xml、demo02_2.xml中中
 #include <iostream>
 #include "tinyxml2.h"
