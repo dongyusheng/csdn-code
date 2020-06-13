@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Users>
+    <User Name="dongshao" Password="pwd">
+        <Gender>man</Gender>
+        <Age>10000</Age>
+        <Gender>man</Gender>
+        <Age>10000</Age>
+        <Mobile>188****3143</Mobile>
+        <Email>1286550014@qq.com</Email>
+        <Mobile>188****3143</Mobile>
+        <Email>1286550014@qq.com</Email>
+    </User>
+    <User Name="Tom" Password="pwd2">
+        <Mobile>188****8888</Mobile>
+    </User>
+    <User Name="Alan" Password="pwd2">
+        <Mobile>188****8888</Mobile>
+    </User>
+</Users>
