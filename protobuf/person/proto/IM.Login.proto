@@ -1,0 +1,35 @@
+syntax = "proto3";
+package IM.Login;
+import "IM.BaseDefine.proto";	// import 引用其他proto文件
+option optimize_for = LITE_RUNTIME;
+
+// message关键字 代表一个对象
+message Phone{
+    string number = 1;	// = 1是什么？默认值
+    IM.BaseDefine.PhoneType phone_type = 2;
+}
+
+message Book{
+    string name = 1;
+    float price = 2;
+}
+
+message Person{
+    string  name    = 1;
+    int32   age     = 2;
+    repeated string languages = 3; // repeated 重复， 可以嵌套对象, 类似数组, 会提供对应的add_languages()接口
+    Phone   phone   = 4;
+    repeated Book   books   = 5;	
+    bool            vip     = 6;
+    string          address = 7;
+}
+
+//使用T开头测试
+message TInt32{
+    int32   int1     = 1;
+}
+
+message TString{
+    string   str1     = 1;
+}
+

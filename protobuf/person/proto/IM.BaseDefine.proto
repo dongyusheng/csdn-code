@@ -1,0 +1,10 @@
+syntax = "proto3";
+package IM.BaseDefine;
+
+option optimize_for = LITE_RUNTIME;
+
+enum PhoneType{
+	PHONE_DEFAULT			= 0x0;		
+    PHONE_HOME              = 0x0001;   // 家庭电话
+    PHONE_WORK              = 0x0002;   // 工作电话     
+}
