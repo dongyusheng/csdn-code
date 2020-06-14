@@ -1,0 +1,14 @@
+syntax = "proto3";
+package Im;
+message helloworld
+{
+	int32 id = 1;
+	string str = 2;
+	int32 opt = 3;
+}
+message worldhello
+{
+	int32 id = 1;
+	string str = 2;
+	int32 otp = 3;
+}

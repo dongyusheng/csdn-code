@@ -1,0 +1,26 @@
+syntax = "proto3";
+package IM.Message;
+import "IM.BaseDefine.proto";
+
+option optimize_for = LITE_RUNTIME;
+
+//service id  0x0003
+message IMMsgData{
+	//cmd id:		0x0301
+	uint32 from_user_id = 1;				//消息发送方
+	uint32 to_session_id = 2;				//消息接受方
+	uint32 msg_id = 3;						//消息ID
+	uint32 create_time = 4; 				//创建时间
+	IM.BaseDefine.MsgType msg_type = 5;
+	bytes msg_data = 6;
+	bytes attach_data = 20;
+}
+
+message IMMsgDataAck{
+	//cmd id:		0x0302
+	uint32 user_id = 1;			//发送此信令的用户id
+	uint32 session_id = 2;				
+	uint32 msg_id = 3;
+	IM.BaseDefine.SessionType session_type = 4;
+}
+

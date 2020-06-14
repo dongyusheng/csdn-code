@@ -1,0 +1,86 @@
+syntax = "proto3";
+package IM.BaseDefine; // 命名空间 C++ IM::BaseDefine
+
+option optimize_for = LITE_RUNTIME;
+
+// service id
+enum ServiceID{
+	SID_DEFAULT			= 0x0;
+    SID_LOGIN           = 0x0001;           // for login
+    SID_BUDDY_LIST      = 0x0002;		    // for friend list
+    SID_MSG             = 0x0003;           //
+    SID_GROUP           = 0x0004;           // for group message
+    SID_FILE            = 0x0005;
+    SID_SWITCH_SERVICE  = 0x0006;
+    SID_OTHER           = 0x0007;
+    SID_INTERNAL        = 0x0008;		     
+}
+
+// command id for login
+enum LoginCmdID{
+	CID_LOGIN_REQ_DEFAULT			= 0x0;
+    CID_LOGIN_REQ_MSGSERVER         = 0x0101; 	//
+    CID_LOGIN_RES_MSGSERVER         = 0x0102;	//
+    CID_LOGIN_REQ_USERLOGIN         = 0x0103;	//
+    CID_LOGIN_RES_USERLOGIN         = 0x0104;	//
+    CID_LOGIN_REQ_LOGINOUT          = 0x0105;	//
+    CID_LOGIN_RES_LOGINOUT          = 0x0106; 	//
+    CID_LOGIN_KICK_USER				= 0x0107; 	//
+    CID_LOGIN_REQ_DEVICETOKEN       = 0x0108;  //
+    CID_LOGIN_RES_DEVICETOKEN       = 0x0109;  //
+    CID_LOGIN_REQ_KICKPCCLIENT      = 0x010a;
+    CID_LOGIN_RES_KICKPCCLIENT      = 0x010b;
+    CID_LOGIN_REQ_PUSH_SHIELD       = 0x010c;	//勿扰
+    CID_LOGIN_RES_PUSH_SHIELD       = 0x010d; 	//
+    CID_LOGIN_REQ_QUERY_PUSH_SHIELD = 0x010e; 	//
+    CID_LOGIN_RES_QUERY_PUSH_SHIELD = 0x010f;
+}
+
+// command id for msg
+enum MessageCmdID{
+	CID_MSG_DEFAULT					= 0x0;
+    CID_MSG_DATA					= 0x0301;	//
+    CID_MSG_DATA_ACK				= 0x0302; 	//
+    CID_MSG_READ_ACK				= 0x0303; 	//
+    CID_MSG_READ_NOTIFY     		= 0x0304;    //  已读消息通知
+    CID_MSG_TIME_REQUEST 			= 0x0305;	//
+    CID_MSG_TIME_RESPONSE			= 0x0306; 	//
+    CID_MSG_UNREAD_CNT_REQUEST		= 0x0307; 	//
+    CID_MSG_UNREAD_CNT_RESPONSE		= 0x0308;	//
+    CID_MSG_LIST_REQUEST            = 0x0309;    //获取指定队列消息
+    CID_MSG_LIST_RESPONSE           = 0x030a;
+    CID_MSG_GET_LATEST_MSG_ID_REQ   = 0x030b;
+    CID_MSG_GET_LATEST_MSG_ID_RSP   = 0x030c;
+    CID_MSG_GET_BY_MSG_ID_REQ       = 0x030d;
+    CID_MSG_GET_BY_MSG_ID_RES       = 0x030e;
+}
+
+enum UserStatType{
+	USER_STATUS_DEFAULT	= 0x0;
+	USER_STATUS_ONLINE 	= 1;
+	USER_STATUS_OFFLINE	= 2;
+	USER_STATUS_LEAVE	= 3;
+
+}
+
+enum ClientType{
+	CLIENT_TYPE_DEFAULT		= 0x0;
+	CLIENT_TYPE_WINDOWS     = 0x01;
+    CLIENT_TYPE_MAC         = 0x02;
+    CLIENT_TYPE_IOS         = 0x11;
+    CLIENT_TYPE_ANDROID     = 0x12;
+}
+
+enum MsgType{
+	MSG_TYPE_DEFAULT		= 0x0;
+	MSG_TYPE_SINGLE_TEXT    = 0x01;
+    MSG_TYPE_SINGLE_AUDIO   = 0x02;
+    MSG_TYPE_GROUP_TEXT     = 0x11;
+    MSG_TYPE_GROUP_AUDIO    = 0x12;
+}
+
+enum SessionType{
+	SESSION_TYPE_DEFAULT	= 0x0;
+	SESSION_TYPE_SINGLE 	= 1;          	//单个用户会话
+	SESSION_TYPE_GROUP 		= 2;          	//群会话
+}
