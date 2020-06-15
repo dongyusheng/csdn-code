@@ -1,4 +1,5 @@
 //hash_test2.c
+https://github.com/dongyusheng/csdn-code/tree/master/openssl/hash
 #include <stdio.h>
 #include <string.h>
 #include <openssl/lhash.h>
