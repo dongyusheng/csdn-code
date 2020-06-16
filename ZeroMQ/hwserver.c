@@ -1,4 +1,6 @@
 //hwserver.c
+//https://blog.csdn.net/qq_41453285/article/details/106005183
+//https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/hwserver.c
 #include <zmq.h>
 #include <stdio.h>
 #include <unistd.h>
