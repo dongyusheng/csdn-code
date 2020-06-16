@@ -1,4 +1,6 @@
 //hwclient.c
+//https://blog.csdn.net/qq_41453285/article/details/106005183
+//https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/hwclient.c
 #include <zmq.h>
 #include <string.h>
 #include <stdio.h>
