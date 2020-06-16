@@ -1,4 +1,6 @@
 //hwserver.cpp
+//https://blog.csdn.net/qq_41453285/article/details/106005183
+//https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/hwserver.cpp
 #include <zmq.hpp>
 #include <iostream>
 #include <unistd.h>
