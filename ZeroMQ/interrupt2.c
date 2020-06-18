@@ -1,4 +1,6 @@
 // interrupt2.c
+// https://github.com/dongyusheng/csdn-code/blob/master/ZeroMQ/interrupt2.c
+// https://blog.csdn.net/qq_41453285/article/details/106824228
 #include <stdio.h>
 #include <zmq.h>
 #include <fcntl.h>
