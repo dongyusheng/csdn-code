@@ -1,5 +1,5 @@
 //wuclient.c
-//https://blog.csdn.net/qq_41453285/article/details/106005939
+//https://blog.csdn.net/qq_41453285/article/details/106877202
 //https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/wuclient.c
 #include <zmq.h>
 #include <stdio.h>
