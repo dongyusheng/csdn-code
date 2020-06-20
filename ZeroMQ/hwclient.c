@@ -1,43 +1,77 @@
-//hwclient.c
-//https://blog.csdn.net/qq_41453285/article/details/106005183
-//https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/hwclient.c
-#include <zmq.h>
-#include <string.h>
+/ /https://blog.csdn.net/qq_41453285/article/details/106878960
+// https://github.com/dongyusheng/csdn-code/blob/master/ZeroMQ/hwclient.c
+// hwclient.c
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <zmq.h>
+
+// 向socket发送数据, 数据为string
+static int s_send(void *socket, char *string);
+// 从socket接收数据, 并将数据以字符串的形式返回
+static char *s_recv(void *socket);
 
 int main()
 {
-    ////创建新的上下文
-    void* context = zmq_ctx_new();
-    printf("Connecting to hello world server...\n");
+    // 1.创建上下文
+    void *context = zmq_ctx_new();
 
-    //创建套接字、连接服务器
-    void* requester = zmq_socket(context, ZMQ_REQ);
+    // 2.创建、绑定套接字
+    void *requester = zmq_socket(context, ZMQ_REQ);
     zmq_connect(requester, "tcp://localhost:5555");
 
-    int request_nbr;
-    for(request_nbr = 0; request_nbr < 10; request_nbr++)
+    int rc;
+    // 3.循环发送数据、接收数据
+    while(1)
     {
-        //发送数据给服务端
-        zmq_msg_t request;
-        zmq_msg_init_size(&request, 5);
-        memcpy(zmq_msg_data(&request), "Hello", 5);
-        printf("Sending hello %d...\n", (request_nbr + 1));
-        zmq_msg_send(&request, requester, 0);
-        zmq_msg_close(&request);
+        // 4.发送数据
+        char *request = "Hello";
+        rc = s_send(requester, request);
+        assert(rc > 0);
 
-        //等待接收服务端回送数据
-        zmq_msg_t reply;
-        zmq_msg_init(&reply);
-        zmq_msg_recv(&reply, requester, 0);
-        printf("Received World %d\n", (request_nbr + 1));
-        zmq_msg_close(&reply);
+        // 5.接收回复数据
+        char *reply = s_recv(requester);
+        assert(reply != NULL);
+        printf("Reply: %s\n", reply);
+        free(reply);
     }
 
-    //善后处理
-    sleep(2);
+    // 6.关闭套接字、销毁上下文
     zmq_close(requester);
-    zmq_ctx_term(context);
+    zmq_ctx_destroy(context);
+
     return 0;
+}
+
+static int s_send(void *socket, char *string)
+{
+    int rc;
+    
+    zmq_msg_t msg;
+    zmq_msg_init_size(&msg, 5);
+    memcpy(zmq_msg_data(&msg), string, strlen(string));
+    
+    rc = zmq_msg_send(&msg, socket, 0);
+    zmq_msg_close(&msg);
+
+    return rc;
+}
+
+static char *s_recv(void *socket)
+{
+    int rc;
+    zmq_msg_t msg;
+    zmq_msg_init(&msg);
+    
+    rc = zmq_msg_recv(&msg, socket, 0);
+    if(rc == -1)
+        return NULL;
+    
+    char *string = (char*)malloc(rc + 1);
+    memcpy(string, zmq_msg_data(&msg), rc);
+    zmq_msg_close(&msg);
+    
+    string[rc] = 0;
+    return string;
 }
