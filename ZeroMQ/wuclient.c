@@ -1,67 +1,76 @@
-//wuclient.c
-//https://blog.csdn.net/qq_41453285/article/details/106877202
-//https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/wuclient.c
-#include <zmq.h>
+// https://blog.csdn.net/qq_41453285/article/details/106877202
+// https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/wuclient.c
+// wuclient.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <unistd.h>
 #include <string.h>
-
-static char* s_recv(void* sokcet);
-
+#include <zmq.h>
+ 
+// 从socket接收数据, 并将数据返回
+char *s_recv(void *socket);
+ 
 int main(int argc, char *argv[])
 {
-    //创建新的上下文
-    void* context = zmq_ctx_new();
-
-    //创建SUB套接字、连接服务端
-    printf("Collecting updates from weather server...\n");
-    void* subscriber = zmq_socket(context, ZMQ_SUB);
-    int rc = zmq_connect(subscriber, "tcp://localhost:5556");
+    // 1.初始化上下文
+    void *context = zmq_ctx_new();
+ 
+    // 2.创建套接字、连接发布者
+    void *subscriber = zmq_socket(context, ZMQ_SUB);
+    assert(subscriber != NULL);
+    int rc = zmq_connect(subscriber, "tcp://localhost:5555");
     assert(rc == 0);
-
-    //订阅邮政编码，默认为10001(NYC)
-    char* filter = (argc > 1)? argv[1] : "10001";
+ 
+    // 3.因为自己是订阅者, 因此需要使用设置过滤器, 显式指定自己是否需要接收什么类型的消息
+    //   程序运行时可以输入参数, 参数代表邮政编码, 如果参数为空, 那么就过滤10001的消息
+    char *filter = (argc > 1) ? argv[1] : "10001";
     rc = zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, filter, strlen(filter));
-    assert(rc == 0);
-
-    //处理100个更新
+    assert( rc == 0);
+ 
+    // 4.从发布者那里接收消息, 接收10条自己想要的数据
     int update_nbr;
     long total_temp = 0;
-    for(update_nbr = 0; update_nbr < 100; update_nbr++)
+    for(update_nbr = 0; update_nbr < 10; update_nbr++)
     {
-        //接收订阅消息
-        char* string = s_recv(subscriber);
-
+        // 5.接收数据
+        char *string = s_recv(subscriber);
+        assert(string != NULL);
+ 
+        // 6.将数据中的邮政编码、温度、适度分别存储变量中
         int zipcode, temperature, relhumidity;
         sscanf(string, "%d %d %d", &zipcode, &temperature, &relhumidity);
         total_temp += temperature;
         free(string);
     }
-    //打印平均温度
-    printf("Average temperature for zipcode '%s' was %dF\n", filter, (int)(total_temp / update_nbr));
-
-    //善后处理
+ 
+    // 7.接收完成之后, 打印一下平均温度
+    printf("Average tempature for zipcode '%s' was %dF\n", filter, (int)(total_temp / update_nbr));
+ 
+    // 8.关闭套接字、销毁上下文
     zmq_close(subscriber);
-    zmq_ctx_term(context);
+    zmq_ctx_destroy(context);
+ 
     return 0;
 }
-
-//从套接字接收ZeroMQ字符串，并将其转换为C/C++字符串
-static char* s_recv(void* socket)
+ 
+char *s_recv(void *socket)
 {
-    zmq_msg_t message;
-    zmq_msg_init(&message);
- 
-    int size = zmq_msg_recv(&message, socket, 0);
+    // 创建zmq_msg_t对象接收数据
+    zmq_msg_t msg;
+    zmq_msg_init(&msg);
+    int size = zmq_msg_recv(&msg, socket, 0);
     if(size == -1)
+    {
         return NULL;
+    }
  
+    // 将zmq_msg_t对象中的数据保存到字符串中
     char *string = (char*)malloc(size + 1);
-    memcpy(string, zmq_msg_data(&message), size);
+    memcpy(string, zmq_msg_data(&msg), size);
  
-    zmq_msg_close(&message);
+    zmq_msg_close(&msg);
     string[size] = 0;
+ 
     return string;
 }
