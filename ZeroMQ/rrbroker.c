@@ -113,7 +113,7 @@ int main()
         }
     }
 
-    // 关闭套接字、销毁上下文
+    // 8.关闭套接字、销毁上下文
     zmq_close(frontend);
     zmq_close(backend);
     zmq_ctx_destroy(context);
