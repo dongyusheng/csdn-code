@@ -1,4 +1,6 @@
 // psenvpub.c
+// https://github.com/dongyusheng/csdn-code/blob/master/ZeroMQ/psenvpub.c
+// https://blog.csdn.net/qq_41453285/article/details/106882275
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
