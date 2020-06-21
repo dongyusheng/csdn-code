@@ -17,7 +17,7 @@ int main()
     // 1.创建上下文
     void *context = zmq_ctx_new();
 
-    // 2.创建、绑定套接字
+    // 2.创建套接字、连接服务器
     void *requester = zmq_socket(context, ZMQ_REQ);
     zmq_connect(requester, "tcp://localhost:5555");
 
