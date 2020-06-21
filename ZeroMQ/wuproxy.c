@@ -1,5 +1,6 @@
 // wuproxy.c
-// 源码链接: 
+// https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/wuproxy.c
+// https://blog.csdn.net/qq_41453285/article/details/106888222
 #include <stdio.h>
 #include <zmq.h>
 
