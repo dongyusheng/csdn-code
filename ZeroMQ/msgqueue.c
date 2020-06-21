@@ -1,5 +1,6 @@
 // msgqueue.c
-// 源码链接
+// https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/msgqueue.c
+// https://blog.csdn.net/qq_41453285/article/details/106887035
 #include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
