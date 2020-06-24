@@ -2,71 +2,90 @@
 //https://blog.csdn.net/qq_41453285/article/details/106922554
 //https://github.com/dongyusheng/csdn-code/edit/master/ZeroMQ/taskvent.c
 #include <stdio.h>
-#include <time.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 #include <zmq.h>
 
-#define randof(num)  (int)((float)(num)*random()/(RAND_MAX + 1.0))
-static int s_send (void *socket, char *string);
+#define randof(num)  (int)((float)(num) * random() / (RAND_MAX + 1.0))
+
+// 向套接字socket发送消息string
+static int s_send(void *socket, char *string);
 
 int main()
 {
-    //创建一个新的上下文
+    int rc;
+    
+    // 1.创建新的上下文
     void *context = zmq_ctx_new();
+    assert(context != NULL);
 
-    //用于发送消息的套接字
+    // 2.创建PUSH套接字、绑定套接字,
+    //   工人会连接这个套接字, 用来给工人发送消息的
     void *sender = zmq_socket(context, ZMQ_PUSH);
-    zmq_bind(sender, "tcp://*:5557");
+    assert(sender != NULL);
+    rc = zmq_bind(sender, "tcp://*:5557");
+    assert(rc != -1);
 
-    //用于发送批次开始消息的套接字
+    // 3.创建PUSH套接字、并连接到接收器,
+    //   该套接字给接收器发送一个消息, 告诉接收器开始工作, 只使用一次
     void *sink = zmq_socket(context, ZMQ_PUSH);
-    zmq_connect(sink, "tcp://localhost:5558");
+    assert(sink != NULL);
+    rc = zmq_connect(sink, "tcp://localhost:5558");
+    assert(rc != -1);
 
+    // 4.输入回车, 回车之后发生器开始产生任务, 并且向接收器发送一条消息, 用于指示当前发生器要开始工作了
     printf("Press Enter when the workers are ready:");
     getchar();
     printf("Sending tasks to workers...\n");
 
-    //第一个消息发送一个"0"，它表示批次的开始
-    s_send(sink, 0);
+    // 随意发什么, 此处我们发送字符0
+    // 如果接收器未工作, 则s_send()阻塞
+    rc = s_send(sink, "0");
+    assert(rc != -1);
 
-    //初始化随机数发生器
+    // 5.初始化随机数发生器
     srandom((unsigned)time(NULL));
 
-    //发送100个任务
+    // 6.生成100个任务, 然后将任务发送给工人
     int task_nbr;
     int total_msec = 0;
     int workload;
-    for(task_nbr = 0; task_nbr < 100; task_nbr++)
+    for(task_nbr = 0; task_nbr < 100; ++task_nbr)
     {
-        workload = randof(100) + 1; //生成一个毫秒数，1-100之间
-        total_msec += workload;
+        workload = randof(100) + 1;      //生成一个毫秒数, 1-100之间
+        total_msec += workload;          //加到总的毫秒数上
         char string[10];
         sprintf(string, "%d", workload);
-        s_send(sender, string);     //将毫秒数发送给工人
+        s_send(sender, string);          //将毫秒发送给工人
     }
+    //打印总的毫秒数
     printf("Total expected cost: %d msec\n", total_msec);
-    //休眠一会,给zeromq时间来传递
+    
+    // 7.休眠1秒, 给ZeroMQ时间来传递消息
     sleep(1);
 
-    //善后处理
-    zmq_close(sink);
+    // 8.关闭套接字、销毁上下文
     zmq_close(sender);
-    zmq_ctx_term(context);
+    zmq_close(sink);
+    zmq_ctx_destroy(context);
+    
     return 0;
 }
 
-//向指定的套接字发送字符串
-static int s_send (void *socket, char *string) 
+static int s_send(void *socket, char *string)
 {
     int rc;
-    zmq_msg_t message;
-    zmq_msg_init (&message);
-    memcpy (zmq_msg_data (&message), string, strlen (string));
-    rc = zmq_msg_send (&message, socket, 0);
-    assert (!rc);
-    zmq_msg_close (&message);
-    return (rc);
+
+    zmq_msg_t msg;
+    zmq_msg_init_size(&msg, strlen(string));
+    memcpy(zmq_msg_data(&msg), string, strlen(string));
+
+    rc = zmq_msg_send(&msg, socket, 0);
+
+    zmq_msg_close(&msg);
+    
+    return rc;
 }
