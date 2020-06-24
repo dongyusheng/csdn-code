@@ -1,6 +1,6 @@
 // syncpub.c
 // https://blog.csdn.net/qq_41453285/article/details/106949903
-// 源码链接: 
+// https://github.com/dongyusheng/csdn-code/blob/master/ZeroMQ/syncpub.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
