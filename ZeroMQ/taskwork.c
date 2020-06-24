@@ -9,82 +9,103 @@
 #include <assert.h>
 #include <zmq.h>
 
-//从套接字接收ZeroMQ字符串，并将其转换为C/C++字符串
-static char* s_recv(void* sokcet);
-//向指定的套接字发送消息
-static int s_send (void *socket, char *string);
-//休眠指定的毫秒数
-static void s_sleep (int msecs);
+// 从socket上接收数据并返回
+static char *s_recv(void *socket);
+
+// 向套接字socket发送消息string
+static int s_send(void *socket, char *string);
+
+
+// 休眠msecs毫秒
+static int s_sleep(int msecs);
 
 int main()
 {
-    //创建新的上下文
+    int rc;
+    
+    // 1.初始化新的上下文
     void *context = zmq_ctx_new();
+    assert(context != NULL);
 
-    //用于接收消息的套接字
+    // 2.创建套接字、连接发生器
+    //   该套接字用来从发生器接收数据
     void *reciver = zmq_socket(context, ZMQ_PULL);
-    zmq_connect(reciver, "tcp://localhost:5557");
-
-    //用于发送消息的套接字
+    assert(reciver != NULL);
+    rc = zmq_connect(reciver, "tcp://localhost:5557");
+    assert(rc != -1);
+    
+    // 3.创建套接字、连接接收器
+    //   该套接字用来向接收器发送数据
     void *sender = zmq_socket(context, ZMQ_PUSH);
-    zmq_connect(sender, "tcp://localhost:5558");
+    assert(sender != NULL);
+    rc = zmq_connect(sender, "tcp://localhost:5558");
+    assert(rc != -1);
 
-    //永远地处理任务
+    // 4.永久循环处理任务
     while(1)
     {
-        //接收消息
+        // 5.从发生器接收数据, 这里接收到的将是一个毫秒数
         char *string = s_recv(reciver);
-
-        //用于查看器的简易过程指示器
+        assert(string != NULL);
+        //打印接收到的毫秒数
         fflush(stdout);
         printf("%s.", string);
 
-        //休眠
+        // 然后工人休眠指定的毫秒继续工作
         s_sleep(atoi(string));
         free(string);
 
-        //发送空消息
-        s_send(sender,"");
+        
+        // 6.工人在处理完任务之后, 发送一条消息给接收器, 表示完成了一条任务
+        rc = s_send(sender, "");
     }
 
-    //善后处理
+    // 7.关闭套接字、销毁上下文
     zmq_close(reciver);
     zmq_close(sender);
-    zmq_ctx_term(context);
+    zmq_ctx_destroy(context);
+
     return 0;
 }
 
-static char* s_recv(void* socket)
+static char *s_recv(void *socket)
 {
-    zmq_msg_t message;
-    zmq_msg_init(&message);
- 
-    int size = zmq_msg_recv(&message, socket, 0);
-    if(size == -1)
+    int rc;
+    
+    zmq_msg_t msg;
+    zmq_msg_init(&msg);
+
+    rc = zmq_msg_recv(&msg, socket, 0);
+    if(rc == -1)
         return NULL;
- 
-    char *string = (char*)malloc(size + 1);
-    memcpy(string, zmq_msg_data(&message), size);
- 
-    zmq_msg_close(&message);
-    string[size] = 0;
+
+    char *string = (char*)malloc(rc + 1);
+    if(string == NULL)
+        return NULL;
+    memcpy(string, zmq_msg_data(&msg), rc);
+
+    string[rc] = 0;
+    
     return string;
 }
 
-static int s_send (void *socket, char *string) 
+static int s_send(void *socket, char *string)
 {
     int rc;
-    zmq_msg_t message;
-    zmq_msg_init (&message);
-    memcpy (zmq_msg_data (&message), string, strlen (string));
-    rc = zmq_msg_send (&message, socket, 0);
-    assert (!rc);
-    zmq_msg_close (&message);
-    return (rc);
+
+    zmq_msg_t msg;
+    zmq_msg_init_size(&msg, strlen(string));
+    memcpy(zmq_msg_data(&msg), string, strlen(string));
+
+    rc = zmq_msg_send(&msg, socket, 0);
+
+    zmq_msg_close(&msg);
+    
+    return rc;
 }
 
-static void s_sleep (int msecs)
-{
+static int s_sleep(int msecs)
+{ 
 #if (defined (WIN32))
     Sleep (msecs);
 #else
