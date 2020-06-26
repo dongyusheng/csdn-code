@@ -1,3 +1,5 @@
+// https://blog.csdn.net/qq_41453285/article/details/106976702
+// https://github.com/dongyusheng/csdn-code/blob/master/server-client/reactor.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
