@@ -14,7 +14,7 @@
 
 #define BUFFER_LENGTH		4096
 #define MAX_EPOLL_EVENTS	1024
-#define SERVER_PORT			8888
+#define SERVER_PORT         8888
 
 typedef int NCALLBACK(int ,int, void*);
 
@@ -230,13 +230,7 @@ int init_sock(short port) {
 	struct sockaddr_in server_addr;
 	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
-	if(inet_pton(AF_INET, "0.0.0.0", &server_addr.sin_addr.s_addr) == -1)
-	{
-			perror("inet_pton");
-			exit(EXIT_FAILURE);
-	}
-	
-	//server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	server_addr.sin_port = htons(port);
 
 	bind(fd, (struct sockaddr*)&server_addr, sizeof(server_addr));
