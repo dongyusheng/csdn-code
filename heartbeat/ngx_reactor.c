@@ -122,22 +122,23 @@ ngx_reactor_loop(ngx_reactor_t *reactor) {
 
 	while (1) {
 
+        // 获取当前时间
         delta = ngx_current_msec;
         ngx_msec_t timer = ngx_event_find_timer();
 
 
+        // 进行事件轮询
 		int nready = epoll_wait(reactor->epfd, events, MAX_EPOLL_EVENTS, timer);
 		if (nready < 0) {
 			printf("epoll_wait error, exit\n");
 			continue;
 		}
 
+        // 更新一下当前时间, 也就是更新ngx_current_msec
 		ngx_time_update();
 
 		for (i = 0;i < nready;i ++) {
-
 			ngx_event_t *ev = (ngx_event_t*)events[i].data.ptr;
-
 			if ((events[i].events & EPOLLIN) && (ev->what & NGX_EVENT_READING)) {
 
 			    ev->what |= NGX_EVENT_READING;
@@ -149,12 +150,14 @@ ngx_reactor_loop(ngx_reactor_t *reactor) {
 			ev->handler(ev);
 		}
 
-		
+        // 将当前时间与epoll_wait()之前的时间进行比较
 		delta = ngx_current_msec - delta;
+        // 如果超时了, 在函数内部将到时的节点的what表示|上NGX_EVENT_TIMEOUT(超时的)
 		if(delta) ngx_event_expire_timers();
 
 	}
 }
+
 
 
 
