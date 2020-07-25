@@ -16,7 +16,7 @@ public:
 
     ~String();
 public:
-    String& operator=(char* s);
+    String& operator=(const char* s);
     String& operator=(const String& s);
     
     char& operator[](int i);
