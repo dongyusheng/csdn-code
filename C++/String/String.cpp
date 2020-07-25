@@ -73,7 +73,7 @@ String::~String()
     }
 }
 
-String& String::operator=(char* s)
+String& String::operator=(const char* s)
 {
     if(data)
     {
@@ -175,7 +175,7 @@ ostream& operator<<(ostream& out, const String& s)
     return out;
 }
 
-istream& operator>>(istream& in, String& s)
+istream& operator>>(istream& in, const String& s)
 {
     char p[50];
     in.getline(p, 50);
