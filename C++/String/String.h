@@ -26,7 +26,7 @@ public:
     String& operator+=(const char *s);
     
     friend ostream& operator<<(ostream& out, const String& s);
-    friend istream& operator>>(istream& in, const String& s);
+    friend istream& operator>>(istream& in, String& s);
 
     friend bool operator<(const String& s1, const String& s2);
     friend bool operator>(const String& s1, const String& s2);
