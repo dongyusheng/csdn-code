@@ -1,0 +1,36 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    emk-sinatra-url-for (0.2.1)
+      sinatra (>= 0.9.1.1)
+    mustermann (1.0.3)
+    rack (2.2.3)
+    rack-protection (2.0.5)
+      rack
+    redis (4.1.1)
+    sinatra (2.0.5)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.5)
+      tilt (~> 2.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
+    sinatra-redirect-with-flash (0.2.1)
+      sinatra (>= 1.0.0)
+    sinatra-static-assets (1.0.4)
+      sinatra (>= 1.1.0)
+    tilt (2.0.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  emk-sinatra-url-for
+  redis
+  sinatra
+  sinatra-flash
+  sinatra-redirect-with-flash
+  sinatra-static-assets
+
+BUNDLED WITH
+   1.17.2
