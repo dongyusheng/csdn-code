@@ -1,7 +1,7 @@
 # BloomFilter
 The C language implementation of Bloom Filter（布隆过滤器的C语言实现）
 
-* 本仓库对应的CSDN链接为：https://blog.csdn.net/qq_41453285/article/details/106416470
+* 讲解对应的CSDN链接为：https://blog.csdn.net/qq_41453285/article/details/106416470
 * 程序中包含4个文件：
   * bloomfilter.h：布隆过滤器的C语言实现（核心代码）
   * bloomfilter.cpp：布隆过滤器的测试代码
